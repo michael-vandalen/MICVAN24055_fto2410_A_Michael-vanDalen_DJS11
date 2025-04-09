@@ -7,11 +7,13 @@ export default function Header() {
   return (
     <header className="header">
       <div className="header--content">
-        <Link className="header--logo">#LOOP</Link>
+        <Link to="/" className="header--logo">
+          #LOOP
+        </Link>
 
         <nav className={`nav ${menuOpen ? "open" : ""}`}>
           <div className="nav--header-left">
-            <NavLink to="/">Podcasts</NavLink>
+            <NavLink to="/podcasts">Podcasts</NavLink>
             <NavLink to="/favourites">Favourites</NavLink>
             <NavLink to="/about">About</NavLink>
           </div>

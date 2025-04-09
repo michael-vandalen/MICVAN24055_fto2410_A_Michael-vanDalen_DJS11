@@ -151,3 +151,35 @@ footer {
   margin-top: auto;
   font-weight: 500;
 }
+
+/* Podcast Cards */
+.podcast--list-container {
+  padding-inline: 20px;
+}
+
+.podcast--list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  gap: 25px;
+  margin-top: 120px;
+}
+
+.podcast-card img {
+  height: 150px;
+  border-radius: 5px;
+}
+
+/* Podcast Details */
+.podcast--details-container {
+  padding: 27px;
+}
+
+.podcast--details {
+  display: flex;
+  flex-direction: column;
+}
+
+.podcast--details img {
+  width: 200px;
+}
