@@ -5,17 +5,40 @@ const URL = `https://podcast-api.netlify.app`;
 
 export default function Podcasts() {
   const [podcasts, setPodcasts] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
 
   useEffect(() => {
-    fetch(URL)
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchPod = async () => {
+      setIsLoading(true);
+
+      try {
+        const res = await fetch(`${URL}`);
+        const data = await res.json();
         setPodcasts(data);
-      });
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchPod();
   }, []);
 
-  const podcastElement = podcasts.map((podcasts) => (
-    <div key={podcasts.id} className="podcast-card">
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Something went wrong! Please try again.</div>;
+  }
+  // Variable for sorting alphabetically
+  const sortedPodcast = [...podcasts].sort((a, b) =>
+    a.title.localeCompare(b.title)
+  );
+  const podcastElement = sortedPodcast.map((podcasts) => (
+    <div key={podcasts.id} className="podcast--card">
       <Link to={`/podcasts/${podcasts.id}`}>
         <img src={podcasts.image} />
         <h3>{podcasts.title}</h3>
