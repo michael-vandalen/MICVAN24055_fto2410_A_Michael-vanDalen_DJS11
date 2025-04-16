@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 export default function Favourites() {
   const [favourites, setFavourites] = useState([]);
   const [episodes, setEpisodes] = useState([]);
+  const [sortOrder, setSortOrder] = useState("A-Z");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -85,45 +86,92 @@ export default function Favourites() {
     return <div>{error}</div>;
   }
 
+  const groupedEpisodes = episodes
+    .sort((a, b) => {
+      if (sortOrder === "A-Z") {
+        return a.title.localeCompare(b.title); // Sort A-Z
+      } else {
+        return b.title.localeCompare(a.title); // Sort Z-A
+      }
+    })
+    .reduce((acc, episode) => {
+      const show = episode.podcastTitle || "Unknown Show";
+      const season = episode.seasonTitle || `Season ${episode.season}`;
+
+      if (!acc[show]) acc[show] = {};
+      if (!acc[show][season]) acc[show][season] = [];
+
+      acc[show][season].push(episode);
+      return acc;
+    }, {});
+
   return (
     <div>
       <Link to="/podcasts">Back to Podcasts</Link>
 
       <h2>Favorite Episodes</h2>
 
+      <div className="sort--order">
+        <label htmlFor="sort--select">Sort by Title:</label>
+        <select
+          id="sort--select"
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+        >
+          <option value="A-Z">A-Z</option>
+          <option value="Z-A">Z-A</option>
+        </select>
+      </div>
+
       {favourites.length === 0 ? (
         <p>No favorite episodes found.</p>
       ) : (
-        <div className="favorite-episodes">
-          {episodes.map((episode, index) => {
-            const favId = `${episode.podcastId}-${episode.season}-${episode.episode}`;
-            const fav = favourites.find((f) => f.id === favId);
+        <div className="favorite--episodes">
+          {Object.entries(groupedEpisodes).map(([showTitle, seasons]) => (
+            <div key={showTitle} className="podcast--group">
+              <h2>{showTitle}</h2>
 
-            return (
-              <div key={index} className="episode">
-                <h3>
-                  {episode.podcastTitle && <span>{episode.podcastTitle} </span>}
-                </h3>
-                <h4>
-                  {episode.seasonTitle} - Episode {episode.episode}:{" "}
-                  {episode.title}
-                </h4>
-                <p>{episode.description}</p>
-                <audio controls src={episode.file}></audio>
-                {fav?.addedAt && (
-                  <p className="timestamp">
-                    Added on: {new Date(fav.addedAt).toLocaleString()}
-                  </p>
-                )}
-                <button
-                  onClick={() => removeFavourite(favId)}
-                  className="remove-btn"
-                >
-                  Remove from Favorites
-                </button>
-              </div>
-            );
-          })}
+              {Object.entries(seasons).map(
+                ([seasonTitle, episodesInSeason]) => (
+                  <div key={seasonTitle} className="season--group">
+                    <h3>{seasonTitle}</h3>
+
+                    {episodesInSeason.map((episode, index) => {
+                      const favId = `${episode.podcastId}-${episode.season}-${episode.episode}`;
+                      const fav = favourites.find((f) => f.id === favId);
+
+                      return (
+                        <div key={index} className="episode">
+                          <h3>
+                            {episode.podcastTitle && (
+                              <span>{episode.podcastTitle} </span>
+                            )}
+                          </h3>
+                          <h4>
+                            {episode.seasonTitle} - Episode {episode.episode}:{" "}
+                            {episode.title}
+                          </h4>
+                          <p>{episode.description}</p>
+                          <audio controls src={episode.file}></audio>
+                          {fav?.addedAt && (
+                            <p className="timestamp">
+                              Added on: {new Date(fav.addedAt).toLocaleString()}
+                            </p>
+                          )}
+                          <button
+                            onClick={() => removeFavourite(favId)}
+                            className="remove--btn"
+                          >
+                            Remove from Favorites
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )
+              )}
+            </div>
+          ))}
         </div>
       )}
     </div>

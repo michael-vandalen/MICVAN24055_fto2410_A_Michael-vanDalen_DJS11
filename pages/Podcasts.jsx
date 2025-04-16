@@ -1,56 +1,84 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
-
-const URL = `https://podcast-api.netlify.app`;
+import { useEffect } from "react";
+import usePodcastStore from "../src/stores/usePodcastStore";
 
 export default function Podcasts() {
-  const [podcasts, setPodcasts] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const {
+    podcasts,
+    genres,
+    selectedGenre,
+    sortOrder,
+    isLoading,
+    error,
+    fetchData,
+    setSelectedGenre,
+    setSortOrder,
+  } = usePodcastStore();
 
   useEffect(() => {
-    const fetchPod = async () => {
-      setIsLoading(true);
-
-      try {
-        const res = await fetch(`${URL}`);
-        const data = await res.json();
-        setPodcasts(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchPod();
+    fetchData();
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Something went wrong! Please try again.</div>;
-  }
-  // Variable for sorting alphabetically
-  const sortedPodcast = [...podcasts].sort((a, b) =>
-    a.title.localeCompare(b.title)
+  // Filtering by genre
+  const filteredPodcasts = podcasts.filter((podcast) =>
+    selectedGenre ? podcast.genres.includes(parseInt(selectedGenre)) : true
   );
-  const podcastElement = sortedPodcast.map((podcasts) => (
-    <div key={podcasts.id} className="podcast--card">
-      <Link to={`/podcasts/${podcasts.id}`}>
-        <img src={podcasts.image} />
-        <h3>{podcasts.title}</h3>
-        <p>Seasons: {podcasts.seasons}</p>
-      </Link>
-    </div>
-  ));
+
+  const sortedPodcasts = [...filteredPodcasts].sort((a, b) =>
+    sortOrder === "A-Z"
+      ? a.title.localeCompare(b.title)
+      : b.title.localeCompare(a.title)
+  );
 
   return (
     <div className="podcast--list-container">
       <h1>All Podcasts</h1>
-      <div className="podcast--list">{podcastElement}</div>
+
+      {/* Sort and filter Controls */}
+      <div className="controls">
+        <select
+          value={selectedGenre}
+          onChange={(e) => setSelectedGenre(e.target.value)}
+        >
+          <option value="">All Genres</option>
+          {Object.entries(genres).map(([id, name]) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+        >
+          <option value="A-Z">Sort A-Z</option>
+          <option value="Z-A">Sort Z-A</option>
+        </select>
+      </div>
+
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : error ? (
+        <div>Something went wrong!</div>
+      ) : (
+        <div className="podcast--list">
+          {sortedPodcasts.map((podcast) => (
+            <div key={podcast.id} className="podcast--card">
+              <Link to={`/podcasts/${podcast.id}`}>
+                <img src={podcast.image} alt={podcast.title} />
+                <h3>{podcast.title}</h3>
+                <ul className="podcast--genres">
+                  {podcast.genres.map((id) => (
+                    <li key={id}>{genres[id] || `Genre ${id}`}</li>
+                  ))}
+                </ul>
+                <p>Seasons: {podcast.seasons}</p>
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

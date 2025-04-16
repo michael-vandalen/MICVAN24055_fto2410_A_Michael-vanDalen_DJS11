@@ -189,6 +189,80 @@ footer {
   border-radius: 5px;
 }
 
+.podcast--genres {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Centers the genre chips horizontally */
+  align-items: center; /* Centers the genre chips vertically if needed */
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.podcast--genres li {
+  list-style-type: none;
+  padding: 5px 10px;
+  background-color: #f3f4f6;
+  color: #333;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  display: inline-block; /* Ensure it's displayed inline */
+}
+
+.podcast--genres li:hover {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.podcast--genres li:empty {
+  display: none; /* Hide empty genres if they aren't available yet */
+}
+
+.genre--filter {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.genre--filter label {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.genre--filter select {
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: 400;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.genre--filter select:hover {
+  border-color: #007bff;
+}
+
+.genre--filter select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.genre--filter option {
+  padding: 10px;
+  font-size: 1rem;
+}
+
+.genre--filter option:disabled {
+  color: #ccc;
+}
+
 /* Podcast Details */
 .podcast--details-container {
   padding: 27px;
@@ -302,7 +376,59 @@ footer {
   background-color: #d1d5db;
 }
 
-.remove-btn {
+/* Favorites Page */
+.favorite--episodes {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+}
+
+.podcast--group {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.podcast--group h2 {
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.season--group {
+  margin-bottom: 1.5rem;
+}
+
+.season--group h3 {
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.episode h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  color: #222;
+}
+
+.episode p {
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.audio {
+  margin: 0.5rem 0;
+}
+
+.timestamp {
+  font-size: 0.85rem;
+  color: #777;
+  margin-bottom: 0.5rem;
+}
+
+.remove--btn {
   background: #ff4d4f;
   color: white;
   border: none;
@@ -311,4 +437,34 @@ footer {
   cursor: pointer;
   border-radius: 4px;
   align-self: left;
+}
+
+.remove-btn:hover {
+  background-color: #e63946;
+}
+
+/* Sorting dropdown container */
+.sort--order {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem; /* Space between label and select */
+}
+
+/* Sorting label */
+.sort--order label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Sorting select */
+.sort--order select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  width: 150px;
 }
