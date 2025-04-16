@@ -24,11 +24,20 @@ export default function Podcasts() {
     selectedGenre ? podcast.genres.includes(parseInt(selectedGenre)) : true
   );
 
-  const sortedPodcasts = [...filteredPodcasts].sort((a, b) =>
-    sortOrder === "A-Z"
-      ? a.title.localeCompare(b.title)
-      : b.title.localeCompare(a.title)
-  );
+  const sortedPodcasts = [...filteredPodcasts].sort((a, b) => {
+    switch (sortOrder) {
+      case "A-Z":
+        return a.title.localeCompare(b.title);
+      case "Z-A":
+        return b.title.localeCompare(a.title);
+      case "Oldest":
+        return new Date(a.updated) - new Date(b.updated);
+      case "Newest":
+        return new Date(b.updated) - new Date(a.updated);
+      default:
+        return 0;
+    }
+  });
 
   return (
     <div className="podcast--list-container">
@@ -54,6 +63,8 @@ export default function Podcasts() {
         >
           <option value="A-Z">Sort A-Z</option>
           <option value="Z-A">Sort Z-A</option>
+          <option value="Oldest">Oldest</option>
+          <option value="Newest">Newest</option>
         </select>
       </div>
 
@@ -74,6 +85,9 @@ export default function Podcasts() {
                   ))}
                 </ul>
                 <p>Seasons: {podcast.seasons}</p>
+                <p>
+                  Last Updated: {new Date(podcast.updated).toLocaleDateString()}
+                </p>
               </Link>
             </div>
           ))}

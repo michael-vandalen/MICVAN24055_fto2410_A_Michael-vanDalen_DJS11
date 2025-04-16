@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import useFavouriteStore from "../src/stores/useFavoriteStore";
+import useAudioPlayerStore from "../src/stores/useAudioPlayerStore";
 
 export default function PodcastDetail() {
   const params = useParams();
@@ -8,10 +10,11 @@ export default function PodcastDetail() {
   const [genreNames, setGenreNames] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
-  const [favourites, setFavourites] = useState(() => {
-    const stored = localStorage.getItem("favouriteEpisodes");
-    return stored ? JSON.parse(stored) : [];
-  });
+  const setCurrentEpisode = useAudioPlayerStore(
+    (state) => state.setCurrentEpisode
+  );
+  const { favorites, addFavorite, removeFavorite, isFavorite } =
+    useFavouriteStore();
 
   useEffect(() => {
     window.scrollTo(0, 0); // Show details always starts at top of page
@@ -45,29 +48,8 @@ export default function PodcastDetail() {
     return <div>Something went wrong! Please try again.</div>;
   }
 
-  const toggleFavourite = (episodeId) => {
-    let updatedFavourites;
-
-    // Check if the episodeId is already in the favourites
-    const existingFavourite = favourites.find((fav) => fav.id === episodeId);
-
-    if (existingFavourite) {
-      // If the episode is already a favorite, remove it
-      updatedFavourites = favourites.filter((fav) => fav.id !== episodeId);
-    } else {
-      // If it's not a favorite, add it with the current date and time
-      updatedFavourites = [
-        ...favourites,
-        { id: episodeId, addedAt: new Date().toISOString() },
-      ];
-    }
-
-    // Update state and localStorage
-    setFavourites(updatedFavourites);
-    localStorage.setItem(
-      "favouriteEpisodes",
-      JSON.stringify(updatedFavourites)
-    );
+  const toggleFavorite = (episodeId) => {
+    isFavorite(episodeId) ? removeFavorite(episodeId) : addFavorite(episodeId);
   };
 
   return (
@@ -104,7 +86,7 @@ export default function PodcastDetail() {
               <div key={season.season} className="episodes">
                 {season.episodes.map((episode) => {
                   const episodeId = `${podcast.id}-${season.season}-${episode.episode}`;
-                  const isFavorite = favourites.some(
+                  const isFavorite = favorites.some(
                     (fav) => fav.id === episodeId
                   );
                   return (
@@ -113,9 +95,21 @@ export default function PodcastDetail() {
                         Episode: {episode.episode}: {episode.title}
                       </h4>
                       <p>{episode.description}</p>
-                      <audio controls src={episode.file}></audio>
                       <button
-                        onClick={() => toggleFavourite(episodeId)}
+                        onClick={() =>
+                          setCurrentEpisode({
+                            title: episode.title,
+                            podcastTitle: podcast.title,
+                            file: episode.file,
+                          })
+                        }
+                        className="play--btn"
+                      >
+                        ▶️ Play
+                      </button>
+
+                      <button
+                        onClick={() => toggleFavorite(episodeId)}
                         className={`favorite-btn ${
                           isFavorite ? "favorited" : "not-favorited"
                         }`}

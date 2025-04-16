@@ -62,13 +62,6 @@ header {
   gap: 20px;
 }
 
-/* Right group: login, sign up */
-.nav--header-right {
-  display: flex;
-  gap: 20px;
-  margin-left: auto;
-}
-
 header a {
   text-decoration: none;
   color: #fff;
@@ -263,6 +256,96 @@ footer {
   color: #ccc;
 }
 
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.controls select {
+  padding: 10px 15px;
+  font-size: 1rem;
+  font-weight: 400;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+  width: 45%; /* Adjusts width for better distribution */
+}
+
+.controls select:hover {
+  border-color: #007bff;
+}
+
+.controls select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.controls label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.controls .genre--filter select {
+  flex-grow: 1;
+}
+
+/* Responsiveness for Podcasts */
+@media (max-width: 1024px) {
+  .podcast--list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .podcast--list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .genre--filter {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .genre--filter select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .podcast--list {
+    grid-template-columns: 1fr;
+  }
+
+  .podcast--card {
+    max-width: 100%;
+  }
+
+  .podcast--card img {
+    width: 100%;
+    height: auto;
+  }
+
+  .genre--filter label {
+    font-size: 1rem;
+  }
+
+  .genre--filter select {
+    font-size: 0.95rem;
+  }
+
+  .podcast--genres li {
+    font-size: 13px;
+    padding: 4px 8px;
+  }
+}
+
 /* Podcast Details */
 .podcast--details-container {
   padding: 27px;
@@ -316,6 +399,13 @@ footer {
   padding: 1rem;
   background-color: #f8f8f8;
   border-radius: 8px;
+}
+
+.custom--audio {
+  width: 100%;
+  border-radius: 8px;
+  background-color: #eee;
+  outline: none;
 }
 
 .season--image {
@@ -467,4 +557,20 @@ footer {
   background-color: #fff;
   cursor: pointer;
   width: 150px;
+}
+
+/* Audio Player */
+
+.audio-player--container {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1000;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
 }

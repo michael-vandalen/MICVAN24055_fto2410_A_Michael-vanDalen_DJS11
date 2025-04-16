@@ -17,10 +17,6 @@ export default function Header() {
             <NavLink to="/favourites">Favourites</NavLink>
             <NavLink to="/about">About</NavLink>
           </div>
-          <div className="nav--header-right">
-            <NavLink to="/login">Login</NavLink>
-            <NavLink to="/signup">Sign up</NavLink>
-          </div>
         </nav>
 
         <button

@@ -1,24 +1,20 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useFavoriteStore from "../src/stores/useFavoriteStore";
 
 export default function Favourites() {
-  const [favourites, setFavourites] = useState([]);
+  const { favorites, removeFavorite } = useFavoriteStore();
   const [episodes, setEpisodes] = useState([]);
   const [sortOrder, setSortOrder] = useState("A-Z");
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch favorite episodes from local storage
-    const storedFavourites =
-      JSON.parse(localStorage.getItem("favouriteEpisodes")) || [];
-    setFavourites(storedFavourites);
-
     // Fetch the episodes data based on the favorite episode IDs
     const fetchFavouriteEpisodes = async () => {
       try {
         const fetchedEpisodes = [];
-        for (const fav of storedFavourites) {
+        for (const fav of favorites) {
           // fav is an object now
           const [podcastId, season, episode] = fav.id.split("-");
 
@@ -53,24 +49,15 @@ export default function Favourites() {
       }
     };
 
-    if (storedFavourites.length > 0) {
+    if (favorites.length > 0) {
       fetchFavouriteEpisodes();
     } else {
       setIsLoading(false); // No favourites stored
     }
-  }, []);
+  }, [favorites]);
 
-  const removeFavourite = (favIdToRemove) => {
-    const updatedFavourites = favourites.filter(
-      (fav) => fav.id !== favIdToRemove
-    );
-
-    setFavourites(updatedFavourites);
-    localStorage.setItem(
-      "favouriteEpisodes",
-      JSON.stringify(updatedFavourites)
-    );
-
+  const handleRemoveFavorite = (favIdToRemove) => {
+    removeFavorite(favIdToRemove);
     setEpisodes((prev) =>
       prev.filter(
         (ep) => `${ep.podcastId}-${ep.season}-${ep.episode}` !== favIdToRemove
@@ -88,10 +75,17 @@ export default function Favourites() {
 
   const groupedEpisodes = episodes
     .sort((a, b) => {
-      if (sortOrder === "A-Z") {
-        return a.title.localeCompare(b.title); // Sort A-Z
-      } else {
-        return b.title.localeCompare(a.title); // Sort Z-A
+      switch (sortOrder) {
+        case "A-Z":
+          return a.title.localeCompare(b.title);
+        case "Z-A":
+          return b.title.localeCompare(a.title);
+        case "Oldest":
+          return new Date(a.addedAt) - new Date(b.addedAt);
+        case "Newest":
+          return new Date(b.addedAt) - new Date(a.addedAt);
+        default:
+          return 0;
       }
     })
     .reduce((acc, episode) => {
@@ -112,7 +106,7 @@ export default function Favourites() {
       <h2>Favorite Episodes</h2>
 
       <div className="sort--order">
-        <label htmlFor="sort--select">Sort by Title:</label>
+        <label htmlFor="sort--select">Sort by:</label>
         <select
           id="sort--select"
           value={sortOrder}
@@ -120,10 +114,12 @@ export default function Favourites() {
         >
           <option value="A-Z">A-Z</option>
           <option value="Z-A">Z-A</option>
+          <option value="Oldest">Oldest Added</option>
+          <option value="Newest">Newest Added</option>
         </select>
       </div>
 
-      {favourites.length === 0 ? (
+      {favorites.length === 0 ? (
         <p>No favorite episodes found.</p>
       ) : (
         <div className="favorite--episodes">
@@ -138,7 +134,7 @@ export default function Favourites() {
 
                     {episodesInSeason.map((episode, index) => {
                       const favId = `${episode.podcastId}-${episode.season}-${episode.episode}`;
-                      const fav = favourites.find((f) => f.id === favId);
+                      const fav = favorites.find((f) => f.id === favId);
 
                       return (
                         <div key={index} className="episode">
@@ -159,7 +155,7 @@ export default function Favourites() {
                             </p>
                           )}
                           <button
-                            onClick={() => removeFavourite(favId)}
+                            onClick={() => handleRemoveFavorite(favId)}
                             className="remove--btn"
                           >
                             Remove from Favorites
