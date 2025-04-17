@@ -3,6 +3,7 @@ import "react-multi-carousel/lib/styles.css";
 import usePodcastStore from "../src/stores/usePodcastStore";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./WebCarousel.css";
 
 export default function WebCarousel() {
   const { podcasts, fetchData } = usePodcastStore();

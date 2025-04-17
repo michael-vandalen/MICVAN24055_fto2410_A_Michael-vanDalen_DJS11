@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import useFavouriteStore from "../src/stores/useFavoriteStore";
 import useAudioPlayerStore from "../src/stores/useAudioPlayerStore";
+import "./PodcastDetails.css";
 
 export default function PodcastDetail() {
+  const navigate = useNavigate();
   const params = useParams();
   const [selectedSeason, setSelectedSeason] = useState(1);
   const [podcast, setPodcast] = useState(null);
@@ -54,9 +56,9 @@ export default function PodcastDetail() {
 
   return (
     <div className="podcast--details-container">
-      <Link to={"/podcasts"} relative="path" className="back--button">
-        <span>Back to Podcasts</span>
-      </Link>
+      <button className="back--button" onClick={() => navigate(-1)}>
+        <span>Back</span>
+      </button>
 
       {podcast ? (
         <div className="podcast--details">

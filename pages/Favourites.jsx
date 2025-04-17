@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useFavoriteStore from "../src/stores/useFavoriteStore";
+import "./Favorites.css";
+import useAudioPlayerStore from "../src/stores/useAudioPlayerStore";
 
 export default function Favourites() {
+  const navigate = useNavigate();
   const { favorites, removeFavorite } = useFavoriteStore();
+  const setCurrentEpisode = useAudioPlayerStore(
+    (state) => state.setCurrentEpisode
+  );
   const [episodes, setEpisodes] = useState([]);
   const [sortOrder, setSortOrder] = useState("A-Z");
   const [isLoading, setIsLoading] = useState(true);
@@ -101,7 +107,9 @@ export default function Favourites() {
 
   return (
     <div>
-      <Link to="/podcasts">Back to Podcasts</Link>
+      <button className="back--button" onClick={() => navigate(-1)}>
+        <span>Back</span>
+      </button>
 
       <h2>Favorite Episodes</h2>
 
@@ -142,7 +150,19 @@ export default function Favourites() {
                             Episode {episode.episode}: {episode.title}
                           </h4>
                           <p>{episode.description}</p>
-                          <audio controls src={episode.file}></audio>
+                          <button
+                            onClick={() =>
+                              setCurrentEpisode({
+                                title: episode.title,
+                                podcastTitle: showTitle,
+                                file: episode.file,
+                              })
+                            }
+                            className="play--btn"
+                          >
+                            ▶️ Play
+                          </button>
+
                           {fav?.addedAt && (
                             <p className="timestamp">
                               Added on: {new Date(fav.addedAt).toLocaleString()}

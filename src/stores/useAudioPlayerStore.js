@@ -6,6 +6,7 @@ const useAudioPlayerStore = create((set) => ({
   setCurrentEpisode: (episode) =>
     set({ currentEpisode: episode, isPlaying: true }),
   setIsPlaying: (playing) => set({ isPlaying: playing }),
+  clearCurrentEpisode: () => set({ currentEpisode: null }),
 }));
 
 export default useAudioPlayerStore;

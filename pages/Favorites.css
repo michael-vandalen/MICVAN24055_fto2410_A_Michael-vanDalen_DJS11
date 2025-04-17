@@ -1,0 +1,241 @@
+/* Favorites Page */
+.favorites-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: system-ui, sans-serif;
+}
+
+.favorites-page a {
+  color: #1d4ed8;
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+.favorites-page a:hover {
+  text-decoration: underline;
+}
+
+.favorites-page h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #1f2937;
+}
+
+.sort--order {
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#sort--select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.favorite--episodes {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.podcast--group {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.podcast--group h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #111827;
+}
+
+.season--group {
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+  border-left: 3px solid #e0e0e0;
+}
+
+.season--group h3 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #374151;
+}
+
+.episode {
+  background: #f9fafb;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.episode h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  color: #1f2937;
+}
+
+.episode p {
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+  font-size: 0.95rem;
+}
+
+.timestamp {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+}
+
+.remove--btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  margin-top: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.remove--btn:hover {
+  background-color: #dc2626;
+}
+
+@media (max-width: 1024px) {
+  .favorites-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .favorites-page h2 {
+    font-size: 1.75rem;
+  }
+
+  .sort--order {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  #sort--select {
+    font-size: 1rem;
+    min-width: 180px;
+  }
+
+  .podcast--group {
+    padding: 1.25rem;
+  }
+
+  .podcast--group h2 {
+    font-size: 1.4rem;
+  }
+
+  .season--group h3 {
+    font-size: 1.15rem;
+  }
+
+  .episode {
+    padding: 1rem;
+  }
+
+  .episode h4 {
+    font-size: 1.05rem;
+  }
+
+  .remove--btn {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .favorites-page {
+    padding: 1rem 0.75rem;
+  }
+
+  .favorites-page h2 {
+    font-size: 1.5rem;
+  }
+
+  .sort--order {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  #sort--select {
+    width: 100%;
+    font-size: 1rem;
+  }
+
+  .podcast--group {
+    padding: 1rem;
+  }
+
+  .podcast--group h2 {
+    font-size: 1.25rem;
+  }
+
+  .season--group {
+    padding-left: 0.75rem;
+    border-left-width: 2px;
+  }
+
+  .season--group h3 {
+    font-size: 1.05rem;
+  }
+
+  .episode {
+    padding: 0.75rem;
+  }
+
+  .episode h4 {
+    font-size: 1rem;
+  }
+
+  .episode p,
+  .timestamp {
+    font-size: 0.9rem;
+  }
+
+  .remove--btn {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+  }
+}
+
+/* Sorting dropdown container */
+.sort--order {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem; /* Space between label and select */
+}
+
+/* Sorting label */
+.sort--order label {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Sorting select */
+.sort--order select {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  width: 150px;
+}

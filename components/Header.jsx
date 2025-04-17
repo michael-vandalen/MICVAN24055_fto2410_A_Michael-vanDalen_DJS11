@@ -20,6 +20,7 @@ export default function Header() {
           <div className="nav--header-left">
             <NavLink to="/podcasts">Podcasts</NavLink>
             <NavLink to="/favourites">Favourites</NavLink>
+            <NavLink to="/Completed">Completed</NavLink>
           </div>
           <div className="nav--header-right">
             <SearchBar />
