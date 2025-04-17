@@ -1,8 +1,13 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import SearchBar from "../utils/SearchBar";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+  useEffect(() => {
+    setMenuOpen(false); // Close hamburger on navigation
+  }, [location.pathname]);
 
   return (
     <header className="header">
@@ -15,7 +20,9 @@ export default function Header() {
           <div className="nav--header-left">
             <NavLink to="/podcasts">Podcasts</NavLink>
             <NavLink to="/favourites">Favourites</NavLink>
-            <NavLink to="/about">About</NavLink>
+          </div>
+          <div className="nav--header-right">
+            <SearchBar />
           </div>
         </nav>
 

@@ -73,7 +73,7 @@ export default function Favourites() {
     return <div>{error}</div>;
   }
 
-  const groupedEpisodes = episodes
+  const sortedPodcasts = episodes
     .sort((a, b) => {
       switch (sortOrder) {
         case "A-Z":
@@ -123,7 +123,7 @@ export default function Favourites() {
         <p>No favorite episodes found.</p>
       ) : (
         <div className="favorite--episodes">
-          {Object.entries(groupedEpisodes).map(([showTitle, seasons]) => (
+          {Object.entries(sortedPodcasts).map(([showTitle, seasons]) => (
             <div key={showTitle} className="podcast--group">
               <h2>{showTitle}</h2>
 
@@ -138,14 +138,8 @@ export default function Favourites() {
 
                       return (
                         <div key={index} className="episode">
-                          <h3>
-                            {episode.podcastTitle && (
-                              <span>{episode.podcastTitle} </span>
-                            )}
-                          </h3>
                           <h4>
-                            {episode.seasonTitle} - Episode {episode.episode}:{" "}
-                            {episode.title}
+                            Episode {episode.episode}: {episode.title}
                           </h4>
                           <p>{episode.description}</p>
                           <audio controls src={episode.file}></audio>

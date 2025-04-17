@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
+import WebCarousel from "../utils/WebCarousel";
 
 export default function Home() {
   return (
     <div>
-      <h2>Featured</h2>
-      <p>This is where the card will come with all featured content</p>
+      <h1 className="home-heading">Featured Podcasts</h1>
+      <WebCarousel />
     </div>
   );
 }
