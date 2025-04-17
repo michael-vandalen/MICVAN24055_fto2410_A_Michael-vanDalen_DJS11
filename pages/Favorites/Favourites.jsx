@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import useFavoriteStore from "../src/stores/useFavoriteStore";
+import useFavoriteStore from "../../src/stores/useFavoriteStore";
 import "./Favorites.css";
-import useAudioPlayerStore from "../src/stores/useAudioPlayerStore";
+import useAudioPlayerStore from "../../src/stores/useAudioPlayerStore";
 
 export default function Favourites() {
   const navigate = useNavigate();

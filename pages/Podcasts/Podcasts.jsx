@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-import usePodcastStore from "../src/stores/usePodcastStore";
+import usePodcastStore from "../../src/stores/usePodcastStore";
 import "./Podcasts.css";
 
 export default function Podcasts() {

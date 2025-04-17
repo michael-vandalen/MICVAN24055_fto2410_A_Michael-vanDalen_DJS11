@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import useFavouriteStore from "../src/stores/useFavoriteStore";
-import useAudioPlayerStore from "../src/stores/useAudioPlayerStore";
+import useFavouriteStore from "../../src/stores/useFavoriteStore";
+import useAudioPlayerStore from "../../src/stores/useAudioPlayerStore";
 import "./PodcastDetails.css";
 
 export default function PodcastDetail() {

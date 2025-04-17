@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import SearchBar from "../utils/SearchBar";
+import SearchBar from "../components/SearchBar/SearchBar";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);

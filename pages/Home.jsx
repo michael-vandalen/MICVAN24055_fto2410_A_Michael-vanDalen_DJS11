@@ -1,4 +1,4 @@
-import WebCarousel from "../utils/WebCarousel";
+import WebCarousel from "../components/WebCarousel/WebCarousel";
 
 export default function Home() {
   return (

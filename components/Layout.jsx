@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-import AudioPlayer from "../utils/AudioPlayer";
+import AudioPlayer from "./AudioPlayer/AudioPlayer";
 
 export default function Layout() {
   return (

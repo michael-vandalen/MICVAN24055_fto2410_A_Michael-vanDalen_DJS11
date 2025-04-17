@@ -2,11 +2,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useEffect } from "react";
 import Layout from "../components/Layout";
 import Home from "../pages/Home";
-import Podcasts from "../pages/Podcasts";
-import Favourites from "../pages/Favourites";
-import PodcastDetail from "../pages/PodcastDetail";
+import Podcasts from "../pages/Podcasts/Podcasts";
+import Favourites from "../pages/Favorites/Favourites";
+import PodcastDetail from "../pages/PodcastDetails/PodcastDetail";
 import useAudioPlayerStore from "./stores/useAudioPlayerStore";
-import Completed from "../pages/Completed";
+import Completed from "../pages/Completed/Completed";
 
 function App() {
   const isPlaying = useAudioPlayerStore((state) => state.isPlaying);
