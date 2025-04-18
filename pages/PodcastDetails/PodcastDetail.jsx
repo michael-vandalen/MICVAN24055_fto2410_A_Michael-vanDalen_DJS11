@@ -12,12 +12,15 @@ export default function PodcastDetail() {
   const [genreNames, setGenreNames] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
+
+  // Zustand Actions
   const setCurrentEpisode = useAudioPlayerStore(
     (state) => state.setCurrentEpisode
   );
   const { favorites, addFavorite, removeFavorite, isFavorite } =
     useFavouriteStore();
 
+  // Fetch Podcast Details
   useEffect(() => {
     window.scrollTo(0, 0); // Show details always starts at top of page
     const fetchPodDetails = async () => {
@@ -31,7 +34,7 @@ export default function PodcastDetail() {
         const data = await res.json();
         setPodcast(data);
 
-        // Fetch Genre
+        // Remove "ALL" genre and set remaining
         setGenreNames((data.genres || []).filter((g) => g !== "All"));
       } catch (error) {
         setError(error);
@@ -42,6 +45,7 @@ export default function PodcastDetail() {
     fetchPodDetails();
   }, [params.id]);
 
+  // Show loading or error state
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -50,6 +54,7 @@ export default function PodcastDetail() {
     return <div>Something went wrong! Please try again.</div>;
   }
 
+  // Toggle favorite status for an episode
   const toggleFavorite = (episodeId) => {
     isFavorite(episodeId) ? removeFavorite(episodeId) : addFavorite(episodeId);
   };
@@ -69,6 +74,7 @@ export default function PodcastDetail() {
             <strong>Genres:</strong> {genreNames.join(", ")}
           </p>
 
+          {/* Season Selector buttons */}
           <div className="selected--tab">
             {podcast.seasons?.map((season) => (
               <button
@@ -83,6 +89,7 @@ export default function PodcastDetail() {
             ))}
           </div>
 
+          {/* Render episodes for selected season */}
           {podcast.seasons?.map((season) =>
             season.season === selectedSeason ? (
               <div key={season.season} className="episodes">
@@ -97,6 +104,8 @@ export default function PodcastDetail() {
                         Episode: {episode.episode}: {episode.title}
                       </h4>
                       <p>{episode.description}</p>
+
+                      {/* Play episode in audio player */}
                       <button
                         onClick={() =>
                           setCurrentEpisode({
@@ -110,6 +119,7 @@ export default function PodcastDetail() {
                         ▶️ Play
                       </button>
 
+                      {/* Mark/unmark episode as favorite */}
                       <button
                         onClick={() => toggleFavorite(episodeId)}
                         className={`favorite-btn ${

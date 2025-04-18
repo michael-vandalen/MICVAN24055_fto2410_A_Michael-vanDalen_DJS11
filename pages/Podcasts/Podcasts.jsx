@@ -4,6 +4,7 @@ import usePodcastStore from "../../src/stores/usePodcastStore";
 import "./Podcasts.css";
 
 export default function Podcasts() {
+  // Destructure state and actions from the Zustand store
   const {
     podcasts,
     genres,
@@ -16,15 +17,17 @@ export default function Podcasts() {
     setSortOrder,
   } = usePodcastStore();
 
+  // Fetch podcast data once on mount
   useEffect(() => {
     fetchData();
   }, []);
 
-  // Filtering by genre
+  // Filter podcasts by selected genre (if any)
   const filteredPodcasts = podcasts.filter((podcast) =>
     selectedGenre ? podcast.genres.includes(parseInt(selectedGenre)) : true
   );
 
+  // Sort filtered podcasts based on selected sort option
   const sortedPodcasts = [...filteredPodcasts].sort((a, b) => {
     switch (sortOrder) {
       case "A-Z":
@@ -46,6 +49,7 @@ export default function Podcasts() {
 
       {/* Sort and filter Controls */}
       <div className="controls">
+        {/* Genre filter dropdown */}
         <select
           value={selectedGenre}
           onChange={(e) => setSelectedGenre(e.target.value)}
@@ -58,6 +62,7 @@ export default function Podcasts() {
           ))}
         </select>
 
+        {/* Sort order dropdown */}
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
@@ -69,17 +74,21 @@ export default function Podcasts() {
         </select>
       </div>
 
+      {/* Conditional rendering for loading/error/data */}
       {isLoading ? (
         <div>Loading...</div>
       ) : error ? (
         <div>Something went wrong!</div>
       ) : (
+        // Podcast card grid
         <div className="podcast--list">
           {sortedPodcasts.map((podcast) => (
             <div key={podcast.id} className="podcast--card">
               <Link to={`/podcasts/${podcast.id}`}>
                 <img src={podcast.image} alt={podcast.title} />
                 <h3>{podcast.title}</h3>
+
+                {/* Genre list */}
                 <ul className="podcast--genres">
                   {podcast.genres.map((id) => (
                     <li key={id}>{genres[id] || `Genre ${id}`}</li>

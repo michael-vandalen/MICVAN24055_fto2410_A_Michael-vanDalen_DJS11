@@ -6,6 +6,7 @@ import useAudioPlayerStore from "../../src/stores/useAudioPlayerStore";
 
 export default function Favourites() {
   const navigate = useNavigate();
+  // Zustand actions
   const { favorites, removeFavorite } = useFavoriteStore();
   const setCurrentEpisode = useAudioPlayerStore(
     (state) => state.setCurrentEpisode
@@ -16,15 +17,14 @@ export default function Favourites() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch the episodes data based on the favorite episode IDs
+    // Fetch details for all favorite episodes
     const fetchFavouriteEpisodes = async () => {
       try {
         const fetchedEpisodes = [];
         for (const fav of favorites) {
-          // fav is an object now
           const [podcastId, season, episode] = fav.id.split("-");
 
-          // Fetching the podcast details for each favorite episode
+          // Fetch full podcast details to extract episode info
           const res = await fetch(
             `https://podcast-api.netlify.app/id/${podcastId}`
           );
@@ -62,6 +62,7 @@ export default function Favourites() {
     }
   }, [favorites]);
 
+  // Remove a favorite from store and UI
   const handleRemoveFavorite = (favIdToRemove) => {
     removeFavorite(favIdToRemove);
     setEpisodes((prev) =>
@@ -71,6 +72,7 @@ export default function Favourites() {
     );
   };
 
+  // Loading and error handling
   if (isLoading) {
     return <div>Loading favorite episodes...</div>;
   }
@@ -79,6 +81,7 @@ export default function Favourites() {
     return <div>{error}</div>;
   }
 
+  // Sort and group episodes by podcast and season
   const sortedPodcasts = episodes
     .sort((a, b) => {
       switch (sortOrder) {
@@ -107,12 +110,14 @@ export default function Favourites() {
 
   return (
     <div>
+      {/* Back button to return to previous page */}
       <button className="back--button" onClick={() => navigate(-1)}>
         <span>Back</span>
       </button>
 
       <h2>Favorite Episodes</h2>
 
+      {/* Sort dropdown */}
       <div className="sort--order">
         <label htmlFor="sort--select">Sort by:</label>
         <select
@@ -127,6 +132,7 @@ export default function Favourites() {
         </select>
       </div>
 
+      {/* Display message if no favorites exist */}
       {favorites.length === 0 ? (
         <p>No favorite episodes found.</p>
       ) : (
@@ -150,6 +156,8 @@ export default function Favourites() {
                             Episode {episode.episode}: {episode.title}
                           </h4>
                           <p>{episode.description}</p>
+
+                          {/* Play button */}
                           <button
                             onClick={() =>
                               setCurrentEpisode({
@@ -163,11 +171,14 @@ export default function Favourites() {
                             ▶️ Play
                           </button>
 
+                          {/* Show when episode was added */}
                           {fav?.addedAt && (
                             <p className="timestamp">
                               Added on: {new Date(fav.addedAt).toLocaleString()}
                             </p>
                           )}
+
+                          {/* Remove from favorites */}
                           <button
                             onClick={() => handleRemoveFavorite(favId)}
                             className="remove--btn"
